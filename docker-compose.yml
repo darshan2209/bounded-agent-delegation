@@ -1,0 +1,61 @@
+# Five components, one per container, matching the architecture in the
+# dissertation. Every service verifies tokens against the IdP's published JWKS,
+# so the trust relationships are the ones a real estate has.
+#
+#   docker compose up -d
+#   docker compose run --rm runner python attack/http_chain.py
+#
+# Set BROKER_MODE=passthrough to reproduce the baseline condition.
+
+services:
+  idp:
+    build: .
+    command: python -m lab.serve idp
+    ports: ["18081:18081"]
+    environment:
+      LOGSINK_HOST: logsink:18085
+
+  broker:
+    build: .
+    command: python -m lab.serve broker
+    ports: ["18082:18082"]
+    depends_on: [idp, logsink]
+    environment:
+      BROKER_MODE: ${BROKER_MODE:-enforcing}   # the single experimental variable
+      IDP_HOST: idp:18081
+      LOGSINK_HOST: logsink:18085
+
+  resource-a:
+    build: .
+    command: python -m lab.serve resource-a
+    ports: ["18083:18083"]
+    depends_on: [idp, logsink]
+    environment:
+      IDP_HOST: idp:18081
+      LOGSINK_HOST: logsink:18085
+
+  resource-b:
+    build: .
+    command: python -m lab.serve resource-b
+    ports: ["18084:18084"]
+    depends_on: [idp, logsink]
+    environment:
+      IDP_HOST: idp:18081
+      LOGSINK_HOST: logsink:18085
+
+  logsink:
+    build: .
+    command: python -m lab.serve logsink
+    ports: ["18085:18085"]
+
+  runner:
+    build: .
+    profiles: ["run"]
+    depends_on: [idp, broker, resource-a, resource-b, logsink]
+    environment:
+      IDP_HOST: idp:18081
+      BROKER_HOST: broker:18082
+      RESOURCE_A_HOST: resource-a:18083
+      RESOURCE_B_HOST: resource-b:18084
+      LOGSINK_HOST: logsink:18085
+    command: python attack/http_chain.py

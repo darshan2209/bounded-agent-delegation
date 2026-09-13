@@ -1,0 +1,25 @@
+title: Agent delegation exceeding policy baseline
+id: 7f2c1a64-0b3e-4a21-9c55-2b9d1f0a77e1
+status: experimental
+description: >
+  Detects an agent sign-in or token-exchange request whose requested scope or audience exceeds the
+  policy baseline, or an exchange attempt lacking a valid may_act authorisation. Presented as a
+  concept rule rather than a tuned production detection.
+references:
+  - https://www.rfc-editor.org/rfc/rfc8693.html
+  - https://learn.microsoft.com/en-us/entra/agent-id/sign-in-audit-logs-agents
+logsource:
+  product: identity_provider
+  service: token_exchange
+detection:
+  exchange_request:
+    event_type: 'token_exchange'
+  over_broad:
+    - requested_audience_count: '>1'
+    - requested_scope_in_baseline: false
+  missing_authorisation:
+    may_act_matched: false
+  condition: exchange_request and (over_broad or missing_authorisation)
+falsepositives:
+  - A newly onboarded agent before its may_act entry is provisioned.
+level: high

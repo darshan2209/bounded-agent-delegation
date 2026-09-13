@@ -1,0 +1,8 @@
+# The laboratory deliberately avoids a web framework so that it runs on a bare
+# Python 3.11 install. These three are the only third-party dependencies.
+PyJWT>=2.8,<3
+cryptography>=42
+PyYAML>=6
+
+# Development only
+pytest>=8

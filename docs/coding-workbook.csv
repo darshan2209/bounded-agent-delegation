@@ -1,0 +1,12 @@
+instrument,dimension,verdict,clause_relied_upon,rationale
+"ISO/IEC 27001:2022","D2 Ownership","C","Annex A A.5.16 with ISO/IEC 27002:2022 5.16","Guidance states non-human entities be considered differently from user-based identities at registration; reaches the machine case explicitly."
+"NIST SP 800-53 Rev. 5","D4 Least-privilege","C","AC-6","Requires least privilege for users (or processes acting on behalf of users); the parenthetical extends the principle to non-human processes."
+"DORA + ICT RTS","D2 Ownership","P+","Reg (EU) 2024/1774 Art. 20(1)","Requires unique identification and authentication of natural persons and systems, but the operative account-assignment duty in Art. 20(2)(a) is staff-scoped, so not C."
+"DORA + ICT RTS","D4 Least-privilege","C","Reg (EU) 2024/1774 Art. 21","Mandates need-to-know, need-to-use and least privilege including for remote and emergency access."
+"DORA + ICT RTS","D5 Agentic delegation","S","Arts 20-21 (absence)","Adversarial read of both articles returns nothing governing delegated authority or the transfer of access rights between principals."
+"NIST SP 800-53 Rev. 5","D5 Agentic delegation","S","IA-9 and SP 800-53B (absence)","IA-9 is the nearest control but governs service authentication rather than delegation, and it is allocated to no baseline in any of the four OSCAL profiles."
+"BSIG s30 (NIS2 DE)","D5 Agentic delegation","S","s30(2) nos. 1-10 (absence)","Full-text search of the consolidated statute returns no machine identity, service account, API or AI agent; BSI guidance frames account management around Benutzende."
+"ISO/IEC 42001:2023","D5 Agentic delegation","S","Annex A A.2-A.10 (absence)","No Annex A category corresponds to access control, credentials or identity; the standard defers information-security controls to ISO/IEC 27001 by design."
+"ISO/IEC 38507:2022","D5 Agentic delegation","P","Clause 5.1","Names the autonomy boundary explicitly, but uses should, prescribes only a major consideration, sits in an overview clause, and the document states no requirements at all."
+"SOC 2 (TSC CC6)","D1 Discovery","P","CC6.2","Governs what happens prior to issuing system credentials, which presupposes the credential is issued through the front door."
+"(30 further cells omitted from this excerpt; the full workbook accompanies the submission)","","","",""

@@ -1,0 +1,36 @@
+# RFC 8693 token-exchange policy: the control under test.
+# Each stanza closes one property of the transitive-delegation primitive.
+
+mode: enforcing            # passthrough | enforcing (BROKER_MODE overrides)
+
+bounded_token:
+  audience:                # revocation boundary: exactly one resource server
+    pin: single
+    allowed:
+      - https://resource.local/api
+  scope:                   # delegated scope: least privilege, never inherited scope
+    strategy: least
+    inherit_from_subject: false
+    allowed:
+      - records:read:single
+  lifetime:                # trust-compounding window
+    ttl_seconds: 300
+    refresh_allowed: false
+  act_claim:               # principal relationship made legible and auditable
+    required: true
+    record_subject: true
+    record_actor: true
+
+# may_act: who may act for whom. An exchange request from an actor not listed
+# here is refused and logged as a distinct reviewable event.
+may_act:
+  - subject: user:analyst@corp.local
+    actors:
+      - agent:report-builder
+  - subject: user:ops@corp.local
+    actors:
+      - agent:report-builder
+
+audit:
+  emit_on: [issue, exchange, refuse, present]
+  sink: http://logsink:9200/events
