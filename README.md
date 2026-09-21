@@ -119,6 +119,14 @@ or an adversarial-scale result. Latency figures quoted in the dissertation are l
 The result is deterministic. `test_result_is_deterministic_across_runs` asserts that five
 consecutive treatment runs all break at `T1078.004`.
 
+## Source verification log
+
+`docs/source-verification-log.md` records how every empirical claim in the dissertation was
+checked: the primary source reached, the verbatim text it carries, and whether a second,
+independent pass instructed to refute the claim could break it. Where a source is paywalled,
+most often an ISO/IEC standard, the log says exactly which parts were reachable rather than
+glossing over it. An examiner can re-run any row.
+
 ## Coding workbook
 
 `docs/coding-workbook.csv` holds the per-cell rationales behind the gap matrix: for each
